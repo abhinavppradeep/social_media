@@ -2,24 +2,13 @@ import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
-  return useContext(AuthContext);
+	return useContext(AuthContext);
 };
 
 export const AuthContextProvider = ({ children }) => {
-  const [AuthUser, setAuthUser] = useState(() => {
-    const storedUser = localStorage.getItem("chat-user");
-    try {
-      return storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-      console.error("Error parsing chat-user from localStorage:", error);
-      return null;
-    }
-  });
+	const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem("chat-user")) || null);
 
-  return (
-    <AuthContext.Provider value={{ AuthUser, setAuthUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+	return <AuthContext.Provider value={{ authUser, setAuthUser }}>{children}</AuthContext.Provider>;
 };
